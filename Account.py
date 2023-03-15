@@ -5,4 +5,4 @@ class Account:
         self.name = name
         self.balance = balance
 
-#Objeto em Py para posteriormente instanciar contas da ATM
+#Python class to later be used at the ATM main file and it's functions

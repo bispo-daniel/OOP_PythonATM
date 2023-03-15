@@ -1,71 +1,89 @@
 from Account import Account
 
-#Criar um else caso o número da conta não foi encontrado
-#Try Except Caso o valor inserido não seja do tipo esperado
-
-iterator = 0
-
+#List that will receive all the instances of Account
 accountsList = []
 
+#Function to get user ID and test if the value entered is an integer
+def getAccountId():
+    try:
+        print("Type the account's ID you want to do this operation...")
+        accountId = int(input())
+    except:
+        print("\nYou probably typed a letter where a number is expected. Try again...\n")
+        main()
+    
+    return accountId
+
+#Function to insert an instance of Account inside the accounts List
 def create():
 
-    print("Type your account's number...")
-    accountIdVALUE = int(input())
+    try:
+        print("Type your account's number...")
+        accountIdVALUE = int(input())
 
-    print("Type your name...")
-    nameVALUE = input()
+        print("Type your name...")
+        nameVALUE = input()
 
-    print("Type your initial balance...")
-    balanceVALUE = int(input())
+        print("Type your initial balance...")
+        balanceVALUE = float(input())
 
-    accountsList.append(Account(accountIdVALUE, nameVALUE, balanceVALUE))
+        #Insert into the list
+        accountsList.append(Account(accountIdVALUE, nameVALUE, balanceVALUE))
+    except:
+        print("\nYou probably typed a letter where a number is expected. Try again...\n")
+        create()
 
     main()
 
+#Function to display every instance of Account previously created
 def read():
     for x in range(len(accountsList)):
         print('\n', accountsList[x].accountId, accountsList[x].name, accountsList[x].balance)
 
     main()
 
+#Function to update a value (Id, Name or Balance) from an instance of Account
 def update():
+    updateId = getAccountId()
 
-    print("Type the account's number you want to update")
-    accountId = int(input())
-    print("What do you want to change? 1) AccountId 2) Name 3) Balance")
-    toBeChanged = input()
-    print("Insert the new value...")
-    newValue = input()
+    try:
+        print("What do you want to change? 1) AccountId 2) Name 3) Balance")
+        toBeChanged = input()
 
-    if toBeChanged == '1':
-        for x in range(len(accountsList)):
-            if(accountsList[x].accountId == accountId):
-                accountsList[x].accountId = int(newValue)
-    elif toBeChanged == '2':
-        for x in range(len(accountsList)):
-            if(accountsList[x].accountId == accountId):
-                accountsList[x].name = newValue
-    elif toBeChanged == '3':
-        for x in range(len(accountsList)):
-            if(accountsList[x].accountId == accountId):
-                accountsList[x].balance = int(newValue)
+        print("Insert the new value...")
+        newValue = input()
+
+        if toBeChanged == '1':
+            for x in range(len(accountsList)):
+                if(accountsList[x].accountId == updateId):
+                    accountsList[x].accountId = int(newValue)
+        elif toBeChanged == '2':
+            for x in range(len(accountsList)):
+                if(accountsList[x].accountId == updateId):
+                    accountsList[x].name = newValue
+        elif toBeChanged == '3':
+            for x in range(len(accountsList)):
+                if(accountsList[x].accountId == updateId):
+                    accountsList[x].balance = float(newValue)
+    except:
+        print("\nYou probably typed a letter where a number is expected. Try again...\n")
+        update()
 
     main()
 
 def delete():
-    print("Type the account's ID you want to delete...")
-    accountId = int(input())
-
-    #A copy is created because as soon as we remove an item from the original list we would shrink it's length
+    #A copy is created because as soon as we remove an item from the original list it shrinks it's length
     #And the for function wouldn't iterate properly
     listLengthNOW = accountsList.copy()
 
+    deleteId = getAccountId()
     for x in range(len(listLengthNOW)):
-        if(listLengthNOW[x].accountId == accountId):
+        if(listLengthNOW[x].accountId == deleteId):
             accountsList.remove(accountsList[x])
 
     main()
 
+#Function to get the lowest balance amongst all the Account's instances
 def min():
     menorSaldo = accountsList[0].balance
 
@@ -75,6 +93,7 @@ def min():
 
     return menorSaldo
 
+#Function to get the highest balance amongst all the Account's instances
 def max():
     maiorSaldo = accountsList[0].balance
 
@@ -84,6 +103,7 @@ def max():
 
     return maiorSaldo
 
+#Function to get the average balance between all Account's instances
 def avg():
     acumulador = 0
     divisor = 0
@@ -94,43 +114,55 @@ def avg():
 
     return acumulador / divisor
 
+#Function to display all the 3 previous functions
 def statistics():
     print("\nThe lowest balance is: ", min())
     print("The greatest balance is:", max())
     print("The average balance is: ", avg(), "\n")
 
+    main()
+
+#Function to get a statement from a specific instance of Account
 def statement():
-    print("Type the account's ID you want to take a statement...")
-    accountId = int(input())
+    statementId = getAccountId()
 
     for x in range(len(accountsList)):
-        if accountsList[x].accountId == accountId:
+        if accountsList[x].accountId == statementId:
             print("Your account's balance: ", accountsList[x].balance)
 
     main()
 
+#Function to make a deposit in a specific instance of Account
 def deposit():
-    print("Type the account's ID you want to make a deposit...")
-    accountId = int(input())
+    depositId = getAccountId()
 
-    print("Type the deposit value...")
-    depositValue = int(input())
+    try:
+        print("Type the deposit value...")
+        depositValue = float(input())
+    except:
+        print("\nYou probably typed a letter where a number is expected. Try again...\n")
+        deposit()
 
     for x in range(len(accountsList)):
-        if(accountsList[x].accountId == accountId):
+        if(accountsList[x].accountId == depositId):
             accountsList[x].balance += depositValue 
 
     main()
 
+#Function to withdraw from a specific instance of Account
 def withdraw():
-    print("Type the account's ID you want to make a withdraw...")
-    accountId = int(input())
-
-    print("Type the withdraw value...")
-    withdrawValue = int(input())
+    withdrawId = getAccountId()
+    
+    try:
+        
+        print("Type the withdraw value...")
+        withdrawValue = float(input())
+    except:
+        print("\nYou probably typed a letter where a number is expected. Try again...\n")
+        withdraw()
 
     for x in range(len(accountsList)):
-        if(accountsList[x].accountId == accountId):
+        if(accountsList[x].accountId == withdrawId):
             if(accountsList[x].balance < withdrawValue):
                 print("Transaction denied! Withdraw greater than balance...")
             else:
@@ -138,15 +170,21 @@ def withdraw():
     
     main()
 
+#Function to transfer a balance amount from one instance to another 
 def transfer():
-    print("From which account do you want to transfer? Type it's ID...")
-    originAccount = int(input())
+    try:
+        print("From which account do you want to transfer? Type it's ID...")
+        originAccount = int(input())
 
-    print("What is the transfer amount?")
-    moneyAmount = int(input())
+        print("What is the transfer amount?")
+        moneyAmount = float(input())
 
-    print("To which account the money will be transfered? Type it's ID...")
-    addressee = int(input())
+        print("To which account the money will be transfered? Type it's ID...")
+        addressee = int(input())
+
+    except:
+        print("\nYou probably typed a letter where a number is expected. Try again...\n")
+        transfer()
 
     for x in range(len(accountsList)):
 
@@ -162,7 +200,7 @@ def transfer():
     
     main()
 
-
+#Main function where the user choose what operation
 def main():
     print("\nWhat do you want to do?" + 
         "\n1) Create account" + 
